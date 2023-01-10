@@ -1,0 +1,10 @@
+li {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.button-delete {
+  border-radius: 5px;
+  border: 1px solid black;
+}
