@@ -2,6 +2,7 @@ name: Deploy to Pages
 
 on:
   push:
+    branches: [phonebook]
 
   workflow_dispatch:
 
