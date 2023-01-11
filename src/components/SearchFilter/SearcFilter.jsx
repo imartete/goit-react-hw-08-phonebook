@@ -1,17 +1,12 @@
-import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { getFilter } from 'redux/filter/filterSlice';
 
-export const Filter = ({ searchItemHandler, filter }) => {
-  return (
-    <input
-      type="search"
-      name="search"
-      onChange={event => searchItemHandler(event.target.value)}
-      value={filter}
-    ></input>
-  );
-};
+export const Filter = () => {
+  const dispatch = useDispatch();
 
-Filter.propTypes = {
-  searchItemHandler: PropTypes.func.isRequired,
-  filter: PropTypes.string,
+  function handleSearch(event) {
+    dispatch(getFilter(event.target.value));
+  }
+
+  return <input type="search" name="search" onInput={handleSearch}></input>;
 };
