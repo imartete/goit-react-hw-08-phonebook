@@ -1,5 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { selectContacts } from 'redux/contacts/selectors';
+import { selectVisibleContacts } from 'redux/selectorsGlobal';
 import { Section } from 'components/Section/Section';
 import { Notification } from 'components/Notification/Notification';
 import { ContactForm } from 'components/ContactForm/ContactForm';
@@ -7,15 +9,8 @@ import { ContactList } from 'components/ContactList/ContactList';
 import { Filter } from 'components/SearchFilter/SearcFilter';
 
 export function App() {
-  const contacts = useSelector(state => state.contacts.contacts);
-  const filter = useSelector(state => state.filter.value);
-
-  function getVisibleContacts() {
-    const normalizedFilter = filter.toLowerCase().trim();
-    return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(normalizedFilter)
-    );
-  }
+  const contacts = useSelector(selectContacts);
+  const visibleContacts = useSelector(selectVisibleContacts);
 
   return (
     <div>
@@ -26,7 +21,7 @@ export function App() {
         {contacts.length ? (
           <>
             <Filter />
-            <ContactList contacts={getVisibleContacts()} />
+            <ContactList contacts={visibleContacts} />
           </>
         ) : (
           <Notification message="No contacts added" />
