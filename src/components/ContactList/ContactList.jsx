@@ -10,7 +10,7 @@ export const ContactList = ({ contacts }) => {
           key={contact.id}
           id={contact.id}
           name={contact.name}
-          number={contact.number}
+          phone={contact.phone}
         />
       ))}
     </ul>
@@ -22,7 +22,7 @@ ContactList.propTypes = {
     PropTypes.shape({
       id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
+      phone: PropTypes.string.isRequired,
     }).isRequired
   ).isRequired,
 };
