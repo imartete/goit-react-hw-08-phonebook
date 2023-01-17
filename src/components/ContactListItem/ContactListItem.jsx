@@ -3,7 +3,7 @@ import './ContactListItem.modules.css';
 import { useDispatch } from 'react-redux';
 import { deleteContact } from 'redux/contacts/operations';
 
-export const ContactListItem = ({ id, name, phone }) => {
+export const ContactListItem = ({ id, name, number }) => {
   const dispatch = useDispatch();
 
   function handleRemove() {
@@ -12,7 +12,7 @@ export const ContactListItem = ({ id, name, phone }) => {
 
   return (
     <li>
-      {name}: {phone}
+      {name}: {number}
       <button type="button" onClick={handleRemove} className="button-delete">
         Delete
       </button>
@@ -23,5 +23,5 @@ export const ContactListItem = ({ id, name, phone }) => {
 ContactListItem.propTypes = {
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  phone: PropTypes.string.isRequired,
+  number: PropTypes.string.isRequired,
 };
