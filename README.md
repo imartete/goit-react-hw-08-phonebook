@@ -1,5 +1,5 @@
-# goit-react-hw-07-phonebook
+# goit-react-hw-08-phonebook
 
-Homework 07
+Homework 08
 
-[GitHub Pages](https://imartete.github.io/goit-react-hw-07-phonebook/)
+[GitHub Pages](https://imartete.github.io/goit-react-hw-08-phonebook/)
