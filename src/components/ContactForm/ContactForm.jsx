@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectContacts } from 'redux/contacts/selectors';
 import './ContactForm.modules.css';
 import { addContact } from 'redux/contacts/operations';
+import { Button, TextInput } from '@mantine/core';
 
 export function ContactForm() {
   const contacts = useSelector(selectContacts);
@@ -36,7 +37,7 @@ export function ContactForm() {
     <form onSubmit={handleSubmit}>
       <label>
         Name
-        <input
+        <TextInput
           type="text"
           name="name"
           value={name}
@@ -48,7 +49,7 @@ export function ContactForm() {
       </label>
       <label>
         Number
-        <input
+        <TextInput
           type="tel"
           name="number"
           value={number}
@@ -58,9 +59,16 @@ export function ContactForm() {
           onChange={handleChange}
         />
       </label>
-      <button type="submit" className="button-submit">
+      <Button
+        type="submit"
+        variant="gradient"
+        gradient={{ from: 'indigo', to: '#BAC8FF' }}
+        sx={{
+          fontSize: '16px',
+        }}
+      >
         Add contact
-      </button>
+      </Button>
     </form>
   );
 }
