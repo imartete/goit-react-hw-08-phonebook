@@ -8,7 +8,6 @@ import {
 } from 'redux/contacts/selectors';
 import { fetchContacts } from 'redux/contacts/operations';
 import { Filter } from 'components/SearchFilter/SearcFilter';
-import { Section } from 'components/Section/Section';
 import { ContactForm } from 'components/ContactForm/ContactForm';
 import { Notification } from 'components/Notification/Notification';
 import { Loader } from 'components/Loader/Loader';
@@ -27,20 +26,19 @@ export default function Contacts() {
     // TODO: conditional rendering HERE, not in APP
     <>
       {/* <TaskEditor /> */}
-      <Section title={'Phonebook'}>
-        <ContactForm />
-      </Section>
-      <Section title={'Contacts'}>
-        {!contacts.length && <Notification message="No contacts added" />}
-        {contacts && (
-          <>
-            <Filter />
-            <ContactList />
-          </>
-        )}
-        {isLoading && <Loader />}
-        {error && <p>An error has occured. {error}</p>}
-      </Section>
+      <h1>Phonebook</h1>
+      <ContactForm />
+
+      <h2>Contacts</h2>
+      {!contacts.length && <Notification message="No contacts added" />}
+      {contacts && (
+        <>
+          <Filter />
+          <ContactList />
+        </>
+      )}
+      {isLoading && <Loader />}
+      {error && <p>An error has occured. {error}</p>}
     </>
   );
 }
