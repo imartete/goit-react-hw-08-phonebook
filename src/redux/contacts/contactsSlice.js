@@ -3,6 +3,7 @@ import {
   fetchContacts,
   addContact,
   deleteContact,
+  editContact,
 } from 'redux/contacts/operations';
 
 const initialState = {
@@ -47,6 +48,16 @@ const contactsSlice = createSlice({
       );
     });
     builder.addCase(deleteContact.rejected, handleRejected);
+    builder.addCase(editContact.pending, handlePending);
+    builder.addCase(editContact.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.error = null;
+      const index = state.items.findIndex(
+        item => item.id === action.payload.id
+      );
+      state.items[index] = action.payload;
+    });
+    builder.addCase(editContact.rejected, handleRejected);
   },
 });
 

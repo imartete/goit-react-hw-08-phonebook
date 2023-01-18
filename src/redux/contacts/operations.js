@@ -37,14 +37,17 @@ export const deleteContact = createAsyncThunk(
   }
 );
 
-// export const editContact = createAsyncThunk(
-//   'contacts/editContact',
-//   async (id, thunkAPI) => {
-//     try {
-//       const response = await axios.patch(`/contacts/${id}`);
-//       return response.data;
-//     } catch (e) {
-//       return thunkAPI.rejectWithValue(e.message);
-//     }
-//   }
-// );
+export const editContact = createAsyncThunk(
+  'contacts/editContact',
+  async ({ id, contactName, contactNumber }, thunkAPI) => {
+    try {
+      const response = await axios.patch(`/contacts/${id}`, {
+        name: contactName,
+        number: contactNumber,
+      });
+      return response.data;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
+    }
+  }
+);
