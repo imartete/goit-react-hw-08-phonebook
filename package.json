@@ -5,7 +5,9 @@
   "homepage": "https://goitacademy.github.io/react-homework-template/",
   "dependencies": {
     "@mantine/core": "^5.10.1",
+    "@mantine/form": "^5.10.1",
     "@mantine/hooks": "^5.10.1",
+    "@mantine/notifications": "^5.10.1",
     "@reduxjs/toolkit": "^1.9.1",
     "@tabler/icons": "^1.119.0",
     "@testing-library/jest-dom": "^5.16.3",
