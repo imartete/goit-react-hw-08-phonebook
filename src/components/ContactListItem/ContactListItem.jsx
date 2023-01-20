@@ -12,16 +12,12 @@ export const ContactListItem = ({ id, name, number }) => {
   const dispatch = useDispatch();
   const [editMode, setEditMode] = useState(false);
   const contacts = useSelector(selectContacts);
-  let existingContact;
 
   const form = useForm({
     initialValues: { name: name, number: number },
 
     validate: {
       name: value => {
-        existingContact = contacts.some(
-          contact => contact.name.toLowerCase() === value.toLowerCase()
-        );
         return value.length &&
           /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/.test(
             value
@@ -49,9 +45,14 @@ export const ContactListItem = ({ id, name, number }) => {
   }
 
   function handleSubmit(values) {
-    if (!existingContact) {
+    if (
+      !contacts.some(
+        contact =>
+          contact.name.toLowerCase() === values.name.toLowerCase() &&
+          contact.number === values.number
+      )
+    )
       dispatch(editContact({ id, ...values }));
-    }
     setEditMode(false);
   }
 
@@ -69,8 +70,8 @@ export const ContactListItem = ({ id, name, number }) => {
       >
         {editMode ? (
           <form onSubmit={form.onSubmit(handleSubmit)}>
-            <TextInput name="name" {...form.getInputProps('name')} />
-            <TextInput name="number" {...form.getInputProps('number')} />
+            <TextInput type="text" {...form.getInputProps('name')} />
+            <TextInput type="number" {...form.getInputProps('number')} />
             <ActionIcon type="submit" variant="outline" color="green">
               <IconCheck size={16} />
             </ActionIcon>
