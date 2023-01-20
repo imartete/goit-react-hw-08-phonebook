@@ -1,71 +1,105 @@
 import PropTypes from 'prop-types';
 import './ContactListItem.modules.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deleteContact, editContact } from 'redux/contacts/operations';
 import { useState } from 'react';
+import { ActionIcon, Flex, Text, TextInput } from '@mantine/core';
+import { IconCheck, IconPencil, IconTrash } from '@tabler/icons';
+import { useForm } from '@mantine/form';
+import { selectContacts } from 'redux/contacts/selectors';
 
 export const ContactListItem = ({ id, name, number }) => {
   const dispatch = useDispatch();
-  const [contactName, setContactName] = useState(name);
-  const [contactNumber, setContactNumber] = useState(number);
   const [editMode, setEditMode] = useState(false);
+  const contacts = useSelector(selectContacts);
+  let existingContact;
+
+  const form = useForm({
+    initialValues: { name: name, number: number },
+
+    validate: {
+      name: value => {
+        existingContact = contacts.some(
+          contact => contact.name.toLowerCase() === value.toLowerCase()
+        );
+        return value.length &&
+          /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/.test(
+            value
+          ) &&
+          value.length < 35
+          ? null
+          : 'Invalid name';
+      },
+      number: value => {
+        return /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/.test(
+          value
+        ) && value.length < 20
+          ? null
+          : 'Invalid number';
+      },
+    },
+  });
 
   function handleRemove() {
     dispatch(deleteContact(id));
   }
 
   function handleEdit() {
-    setEditMode(true);
+    setEditMode(e => !e);
   }
 
-  function handleChange(event) {
-    const { name, value } = event.target;
-    if (name === 'name') setContactName(value);
-    if (name === 'number') setContactNumber(value);
-  }
-
-  function handleKeyDown(event) {
-    if (event.key === 'Enter' || event.key === 'Escape') {
-      if (event.key === 'Enter') {
-        // TODO: check if empty
-        setContactName(contactName);
-        setContactNumber(contactNumber);
-        dispatch(editContact({ id, contactName, contactNumber }));
-        setEditMode(false);
-      }
-      setEditMode(false);
+  function handleSubmit(values) {
+    if (!existingContact) {
+      dispatch(editContact({ id, ...values }));
     }
+    setEditMode(false);
   }
 
   return (
     <li>
-      {editMode ? (
-        <input
-          name="name"
-          value={contactName}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
-        ></input>
-      ) : (
-        name
-      )}
-      :{' '}
-      {editMode ? (
-        <input
-          name="number"
-          value={contactNumber}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
-        ></input>
-      ) : (
-        number
-      )}
-      <button type="button" onClick={handleEdit}>
-        Edit
-      </button>
-      <button type="button" onClick={handleRemove} className="button-delete">
-        Delete
-      </button>
+      <Flex
+        sx={{ width: 300, borderRadius: 5, padding: 10 }}
+        mih={50}
+        bg="rgba(0, 0, 0, .1)"
+        gap="md"
+        justify="space-between"
+        align="center"
+        direction="row"
+        wrap="wrap"
+      >
+        {editMode ? (
+          <form onSubmit={form.onSubmit(handleSubmit)}>
+            <TextInput name="name" {...form.getInputProps('name')} />
+            <TextInput name="number" {...form.getInputProps('number')} />
+            <ActionIcon type="submit" variant="outline" color="green">
+              <IconCheck size={16} />
+            </ActionIcon>
+          </form>
+        ) : (
+          <Flex mih={50} gap="sm" align="start" direction="column" wrap="wrap">
+            <Text fw={500}>{name}</Text>
+            <Text fw={500}>{number}</Text>{' '}
+          </Flex>
+        )}
+        {!editMode && (
+          <Flex
+            sx={{}}
+            gap="sm"
+            mih={50}
+            justify="space-between"
+            align="center"
+            direction="row"
+            wrap="wrap"
+          >
+            <ActionIcon onClick={handleEdit} variant="outline" color="blue">
+              <IconPencil size={16} />
+            </ActionIcon>
+            <ActionIcon onClick={handleRemove} variant="outline" color="red">
+              <IconTrash size={16} />
+            </ActionIcon>
+          </Flex>
+        )}
+      </Flex>
     </li>
   );
 };

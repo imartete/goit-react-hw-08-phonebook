@@ -34,7 +34,6 @@ export function LoginForm() {
         <TextInput
           sx={{ maxWidth: 300 }}
           label="Email"
-          // type="email"
           name="email"
           withAsterisk
           icon={<IconAt size={14} />}
