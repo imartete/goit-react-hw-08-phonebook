@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { lazy } from 'react';
 import { useDispatch } from 'react-redux';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { RestrictedRoute } from 'components/RestrictedRoute';
 import { Layout } from 'components/Layout';
 import { PrivateRoute } from 'components/PrivateRoute';
@@ -66,6 +66,7 @@ export function App() {
                 }
               />
             </Route>
+            <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </NotificationsProvider>
       )}
