@@ -28,16 +28,18 @@ export function ContactForm() {
           /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/.test(
             value
           ) &&
-          !existingContact
+          !existingContact &&
+          value.length < 35
           ? null
           : 'Invalid name';
       },
-      number: value =>
-        /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/.test(
+      number: value => {
+        return /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/.test(
           value
-        )
+        ) && value.length < 20
           ? null
-          : 'Invalid number',
+          : 'Invalid number';
+      },
     },
   });
 
