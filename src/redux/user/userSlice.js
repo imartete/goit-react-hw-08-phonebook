@@ -14,6 +14,11 @@ const initialState = {
 const authSlice = createSlice({
   name: 'auth',
   initialState,
+  reducers: {
+    reduceError(state) {
+      state.error = null;
+    },
+  },
   extraReducers: builder => {
     builder.addCase(register.fulfilled, (state, action) => {
       state.error = null;
@@ -22,12 +27,16 @@ const authSlice = createSlice({
       state.isLoggedIn = true;
     });
     builder.addCase(register.rejected, (state, action) => {
-      state.error = action.error.message;
+      state.error = action.payload;
     });
     builder.addCase(logIn.fulfilled, (state, action) => {
+      state.error = null;
       state.user = action.payload.user;
       state.token = action.payload.token;
       state.isLoggedIn = true;
+    });
+    builder.addCase(logIn.rejected, (state, action) => {
+      state.error = action.payload;
     });
     builder.addCase(logOut.fulfilled, state => {
       state.user = { name: null, email: null };
@@ -53,5 +62,7 @@ const authPersistConfig = {
   storage,
   whitelist: ['token'],
 };
+
+export const { reduceError } = authSlice.actions;
 
 export const authReducer = persistReducer(authPersistConfig, authSlice.reducer);
