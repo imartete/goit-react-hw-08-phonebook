@@ -1,3 +1,4 @@
+import { TextInput } from '@mantine/core';
 import { useDispatch } from 'react-redux';
 import { setFilter } from 'redux/filter/filterSlice';
 
@@ -8,5 +9,11 @@ export const Filter = () => {
     dispatch(setFilter(event.target.value));
   }
 
-  return <input type="search" name="search" onInput={handleSearch}></input>;
+  return (
+    <TextInput
+      onInput={handleSearch}
+      sx={{ width: 200 }}
+      placeholder="Search contact"
+    />
+  );
 };
