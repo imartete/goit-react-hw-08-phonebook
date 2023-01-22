@@ -1,4 +1,4 @@
-import { Alert, Button, PasswordInput, TextInput } from '@mantine/core';
+import { Alert, Button, Flex, PasswordInput, TextInput } from '@mantine/core';
 import { IconAlertCircle, IconAt, IconKey, IconUser } from '@tabler/icons';
 import { useDispatch } from 'react-redux';
 import { register } from '../redux/user/operations';
@@ -6,10 +6,12 @@ import { useForm } from '@mantine/form';
 import { useAuth } from 'hooks/useAuth';
 import { useEffect } from 'react';
 import { reduceError } from 'redux/user/userSlice';
+import { useMediaQuery } from '@mantine/hooks';
 
 export function RegisterForm() {
   const dispatch = useDispatch();
   const { error } = useAuth();
+  const largeScreen = useMediaQuery('(min-width: 900px)');
 
   useEffect(() => {
     dispatch(reduceError());
@@ -34,39 +36,44 @@ export function RegisterForm() {
   return (
     <>
       <form onSubmit={form.onSubmit(handleSubmit)} autoComplete="off">
-        <TextInput
-          sx={{ maxWidth: 300 }}
-          label="Username"
-          type="text"
-          withAsterisk
-          icon={<IconUser size={14} />}
-          {...form.getInputProps('name')}
-        />
-        <TextInput
-          sx={{ maxWidth: 300 }}
-          label="Email"
-          type="email"
-          withAsterisk
-          icon={<IconAt size={14} />}
-          {...form.getInputProps('email')}
-        />
-        <PasswordInput
-          sx={{ maxWidth: 300 }}
-          label="Password"
-          withAsterisk
-          icon={<IconKey size={14} />}
-          {...form.getInputProps('password')}
-        />
-        <Button
-          type="submit"
-          variant="gradient"
-          gradient={{ from: 'teal', to: 'lime', deg: 105 }}
+        <Flex
+          sx={{
+            width: largeScreen ? 400 : 'auto',
+          }}
         >
-          Register
-        </Button>
+          <TextInput
+            label="Username"
+            type="text"
+            withAsterisk
+            icon={<IconUser size={14} />}
+            {...form.getInputProps('name')}
+          />
+          <TextInput
+            label="Email"
+            type="email"
+            withAsterisk
+            icon={<IconAt size={14} />}
+            {...form.getInputProps('email')}
+          />
+          <PasswordInput
+            label="Password"
+            withAsterisk
+            icon={<IconKey size={14} />}
+            {...form.getInputProps('password')}
+          />
+          <Button type="submit">Register</Button>
+        </Flex>
       </form>
       {error && (
-        <Alert icon={<IconAlertCircle size={16} />} title="Bummer!" color="red">
+        <Alert
+          sx={{
+            width: largeScreen ? 400 : 'auto',
+            marginTop: 30,
+          }}
+          icon={<IconAlertCircle size={16} />}
+          title="Bummer!"
+          color="red"
+        >
           {error}
         </Alert>
       )}

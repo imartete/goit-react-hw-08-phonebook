@@ -26,7 +26,26 @@ export function App() {
   return (
     <MantineProvider
       theme={{
+        components: {
+          Flex: {
+            defaultProps: { gap: 'md', direction: 'column' },
+          },
+
+          Button: {
+            defaultProps: { color: 'indigo', size: 'md' },
+          },
+
+          TextInput: {
+            defaultProps: { size: 'md' },
+          },
+          PasswordInput: {
+            defaultProps: {
+              size: 'md',
+            },
+          },
+        },
         colorScheme: 'dark',
+        defaultGradient: { deg: 65, from: 'indigo', to: '#A5D8FF' },
       }}
       withGlobalStyles
       withNormalizeCSS

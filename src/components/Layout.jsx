@@ -11,7 +11,6 @@ import {
   IconLogin,
   IconUserPlus,
 } from '@tabler/icons';
-import { useScrollLock } from '@mantine/hooks';
 
 export function Layout() {
   const [opened, setOpened] = useState(false);
@@ -19,9 +18,6 @@ export function Layout() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { tabValue } = useParams();
-  const [scrollLocked, setScrollLocked] = useScrollLock();
-
-  scrollLocked ?? console.log('Just using this variable, ehe');
 
   return (
     <AppShell
@@ -29,7 +25,6 @@ export function Layout() {
       asideOffsetBreakpoint="sm"
       navbar={
         <Tabs
-          defaultValue="/"
           value={tabValue}
           onTabChange={value => navigate(`${value}`)}
           color="indigo"
@@ -47,7 +42,6 @@ export function Layout() {
                 value="/"
                 onClick={() => {
                   setOpened(o => !o);
-                  setScrollLocked(c => !c);
                 }}
                 icon={<IconHome2 size={20} stroke={1.5} />}
               >
@@ -61,7 +55,6 @@ export function Layout() {
                   value="/contacts"
                   onClick={() => {
                     setOpened(o => !o);
-                    setScrollLocked(c => !c);
                   }}
                   icon={<IconAddressBook size={20} stroke={1.5} />}
                 >
@@ -76,7 +69,6 @@ export function Layout() {
                     value="/register"
                     onClick={() => {
                       setOpened(o => !o);
-                      setScrollLocked(c => !c);
                     }}
                     icon={<IconUserPlus size={20} stroke={1.5} />}
                   >
@@ -88,7 +80,6 @@ export function Layout() {
                     value="/login"
                     onClick={() => {
                       setOpened(o => !o);
-                      setScrollLocked(c => !c);
                     }}
                     icon={<IconLogin size={20} stroke={1.5} />}
                   >
@@ -99,7 +90,7 @@ export function Layout() {
                 </>
               ) : (
                 <Flex
-                  sx={{ marginTop: 'auto', marginBottom: 20 }}
+                  sx={{ marginTop: 'auto', marginBottom: 50 }}
                   direction="column"
                   gap="md"
                 >
@@ -131,18 +122,12 @@ export function Layout() {
                 opened={opened}
                 onClick={() => {
                   setOpened(o => !o);
-                  setScrollLocked(c => !c);
                 }}
                 size="sm"
                 mr="xl"
               />
             </MediaQuery>
-            <Text
-              variant="gradient"
-              gradient={{ from: 'indigo', to: '#A5D8FF', deg: 70 }}
-              fz="xl"
-              fw={500}
-            >
+            <Text variant="gradient" fz="xl" fw={500}>
               PhoneBO.Ok
             </Text>
           </div>

@@ -1,5 +1,6 @@
-import { Alert, Button, PasswordInput, TextInput } from '@mantine/core';
+import { Alert, Button, Flex, PasswordInput, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { useMediaQuery } from '@mantine/hooks';
 import { IconAlertCircle, IconAt, IconKey } from '@tabler/icons';
 import { useAuth } from 'hooks/useAuth';
 import { useEffect } from 'react';
@@ -10,6 +11,7 @@ import { logIn } from '../redux/user/operations';
 export function LoginForm() {
   const dispatch = useDispatch();
   const { error } = useAuth();
+  const largeScreen = useMediaQuery('(min-width: 900px)');
 
   useEffect(() => {
     dispatch(reduceError());
@@ -31,33 +33,39 @@ export function LoginForm() {
   return (
     <>
       <form onSubmit={form.onSubmit(handleSubmit)} autoComplete="off">
-        <TextInput
-          sx={{ maxWidth: 300 }}
-          label="Email"
-          name="email"
-          withAsterisk
-          icon={<IconAt size={14} />}
-          {...form.getInputProps('email')}
-        />
-        <PasswordInput
-          sx={{ maxWidth: 300 }}
-          label="Password"
-          name="password"
-          withAsterisk
-          icon={<IconKey size={14} />}
-          {...form.getInputProps('password')}
-        />
-        <Button
-          type="submit"
-          variant="gradient"
-          gradient={{ from: 'teal', to: 'lime', deg: 105 }}
+        <Flex
+          sx={{
+            width: largeScreen ? 400 : 'auto',
+          }}
         >
-          Log In
-        </Button>
+          <TextInput
+            label="Email"
+            name="email"
+            withAsterisk
+            icon={<IconAt size={14} />}
+            {...form.getInputProps('email')}
+          />
+          <PasswordInput
+            label="Password"
+            name="password"
+            withAsterisk
+            icon={<IconKey size={14} />}
+            {...form.getInputProps('password')}
+          />
+          <Button type="submit">Log In</Button>
+        </Flex>
       </form>
       {error && (
-        <Alert icon={<IconAlertCircle size={16} />} title="Bummer!" color="red">
-          User not found. Invalid data entered.
+        <Alert
+          sx={{
+            width: largeScreen ? 400 : 'auto',
+            marginTop: 30,
+          }}
+          icon={<IconAlertCircle size={16} />}
+          title="Bummer!"
+          color="red"
+        >
+          Invalid data entered. Please try again.
         </Alert>
       )}
     </>
