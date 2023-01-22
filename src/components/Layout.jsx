@@ -1,4 +1,4 @@
-import { Outlet, useNavigate, useParams } from 'react-router-dom';
+import { Outlet, useNavigate, useResolvedPath } from 'react-router-dom';
 import { Suspense, useState } from 'react';
 import { Burger, Button, MediaQuery, Text, Tabs, Flex } from '@mantine/core';
 import { AppShell, Navbar, Header } from '@mantine/core';
@@ -17,7 +17,7 @@ export function Layout() {
   const { isLoggedIn, user } = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { tabValue } = useParams();
+  const { pathname } = useResolvedPath();
 
   return (
     <AppShell
@@ -25,7 +25,8 @@ export function Layout() {
       asideOffsetBreakpoint="sm"
       navbar={
         <Tabs
-          value={tabValue}
+          defaultValue="/"
+          value={pathname}
           onTabChange={value => navigate(`${value}`)}
           color="indigo"
           orientation="vertical"
