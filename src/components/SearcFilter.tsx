@@ -1,11 +1,11 @@
 import { TextInput } from '@mantine/core';
-import { useDispatch } from 'react-redux';
-import { setFilter } from 'redux/filter/filterSlice';
+import { useAppDispatch } from '../hooks/typedHooks';
+import { setFilter } from '../redux/filter/filterSlice';
 
 export const Filter = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  function handleSearch(event) {
+  function handleSearch(event: React.ChangeEvent<HTMLInputElement>): void {
     dispatch(setFilter(event.target.value));
   }
 

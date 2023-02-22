@@ -1,17 +1,18 @@
-import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
-import { deleteContact, editContact } from 'redux/contacts/operations';
+import { deleteContact, editContact } from '../redux/contacts/operations';
 import { useState } from 'react';
 import { ActionIcon, Flex, Text, TextInput } from '@mantine/core';
-import { IconCheck, IconPencil, IconTrash } from '@tabler/icons';
+import { IconCheck, IconPencil, IconTrash, IconX } from '@tabler/icons';
 import { useForm } from '@mantine/form';
-import { selectContacts } from 'redux/contacts/selectors';
+import { selectContacts } from '../redux/contacts/selectors';
 import { useMediaQuery } from '@mantine/hooks';
+import { useAppDispatch, useAppSelector } from '../hooks/typedHooks';
+import { Contact, ContactResponse } from '../redux/types';
+import { showNotification } from '@mantine/notifications';
 
-export const ContactListItem = ({ id, name, number }) => {
-  const dispatch = useDispatch();
-  const [editMode, setEditMode] = useState(false);
-  const contacts = useSelector(selectContacts);
+export const ContactListItem = ({ id, name, number }: ContactResponse) => {
+  const dispatch = useAppDispatch();
+  const contacts = useAppSelector(selectContacts);
+  const [editMode, setEditMode] = useState<boolean>(false);
   const middleScreen = useMediaQuery('(min-width: 600px)');
 
   const form = useForm({
@@ -19,10 +20,19 @@ export const ContactListItem = ({ id, name, number }) => {
 
     validate: {
       name: value => {
+        const existingContact = contacts.some(
+          contact => contact.name.toLowerCase() === value.toLowerCase()
+        );
+        if (existingContact)
+          showNotification({
+            color: 'red',
+            message: `${value} is already in contacts`,
+          });
         return value.length &&
           /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/.test(
             value
           ) &&
+          !existingContact &&
           value.length < 35
           ? null
           : 'Invalid name';
@@ -45,8 +55,7 @@ export const ContactListItem = ({ id, name, number }) => {
     setEditMode(e => !e);
   }
 
-  function handleSubmit(values) {
-    // TODO cancel
+  function handleSubmit(values: Contact) {
     if (
       !contacts.some(
         contact =>
@@ -79,9 +88,23 @@ export const ContactListItem = ({ id, name, number }) => {
             <Flex gap="sm">
               <TextInput type="text" {...form.getInputProps('name')} />
               <TextInput type="number" {...form.getInputProps('number')} />
-              <ActionIcon type="submit" variant="outline" color="green">
-                <IconCheck size={16} />
-              </ActionIcon>
+              <Flex direction="row" gap="sm">
+                <ActionIcon type="submit" variant="outline" color="green">
+                  <IconCheck size={16} />
+                </ActionIcon>
+                <ActionIcon
+                  type="button"
+                  variant="outline"
+                  color="indigo"
+                  onClick={() => {
+                    form.setFieldValue(form.values.name, form.values.number);
+                    setEditMode(false);
+                    form.reset();
+                  }}
+                >
+                  <IconX size={16} />
+                </ActionIcon>
+              </Flex>
             </Flex>
           </form>
         ) : (
@@ -92,7 +115,6 @@ export const ContactListItem = ({ id, name, number }) => {
         )}
         {!editMode && (
           <Flex
-            sx={{}}
             gap="sm"
             mih={50}
             justify="space-between"
@@ -110,10 +132,4 @@ export const ContactListItem = ({ id, name, number }) => {
       </Flex>
     </li>
   );
-};
-
-ContactListItem.propTypes = {
-  id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  number: PropTypes.string.isRequired,
 };

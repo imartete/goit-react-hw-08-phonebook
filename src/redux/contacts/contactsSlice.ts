@@ -1,29 +1,42 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   fetchContacts,
   addContact,
   deleteContact,
   editContact,
-} from 'redux/contacts/operations';
+} from './operations';
+import { ContactResponse, KnownError } from '../types';
 
-const initialState = {
+interface ContactsState {
+  items: ContactResponse[];
+  isLoading: boolean;
+  error: null | string;
+}
+
+const initialState: ContactsState = {
   items: [],
   isLoading: false,
   error: null,
 };
 
-const handlePending = state => {
+const handlePending = (state: ContactsState): void => {
   state.isLoading = true;
 };
 
-const handleRejected = (state, action) => {
+const handleRejected = (
+  state: ContactsState,
+  action: PayloadAction<KnownError | undefined>
+): void => {
+  if (action.payload) {
+    state.error = action.payload.message;
+  }
   state.isLoading = false;
-  state.error = action.payload;
 };
 
 const contactsSlice = createSlice({
   name: 'contacts',
   initialState,
+  reducers: {},
   extraReducers: builder => {
     builder.addCase(fetchContacts.pending, handlePending);
     builder.addCase(fetchContacts.fulfilled, (state, action) => {

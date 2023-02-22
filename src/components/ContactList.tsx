@@ -1,10 +1,10 @@
-import { useSelector } from 'react-redux';
 import { ContactListItem } from './ContactListItem';
-import { selectVisibleContacts } from 'redux/selectorsGlobal';
+import { selectVisibleContacts } from '../redux/selectorsGlobal';
 import { List } from '@mantine/core';
+import { useAppSelector } from '../hooks/typedHooks';
 
 export function ContactList() {
-  const visibleContacts = useSelector(selectVisibleContacts);
+  const visibleContacts = useAppSelector(selectVisibleContacts);
 
   return (
     <List sx={{ marginTop: 20 }} listStyleType="none">

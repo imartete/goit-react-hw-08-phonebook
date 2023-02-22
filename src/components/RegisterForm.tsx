@@ -1,15 +1,16 @@
 import { Alert, Button, Flex, PasswordInput, TextInput } from '@mantine/core';
 import { IconAlertCircle, IconAt, IconKey, IconUser } from '@tabler/icons';
-import { useDispatch } from 'react-redux';
 import { register } from '../redux/user/operations';
 import { useForm } from '@mantine/form';
-import { useAuth } from 'hooks/useAuth';
+import { useAuth } from '../hooks/useAuth';
 import { useEffect } from 'react';
-import { reduceError } from 'redux/user/userSlice';
+import { reduceError } from '../redux/user/userSlice';
 import { useMediaQuery } from '@mantine/hooks';
+import { useAppDispatch } from '../hooks/typedHooks';
+import { UserRegisterRequest } from '../redux/types';
 
 export function RegisterForm() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { error } = useAuth();
   const largeScreen = useMediaQuery('(min-width: 900px)');
 
@@ -29,7 +30,7 @@ export function RegisterForm() {
     },
   });
 
-  function handleSubmit(values) {
+  function handleSubmit(values: UserRegisterRequest) {
     dispatch(register(values));
   }
 

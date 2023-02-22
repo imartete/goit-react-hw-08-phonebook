@@ -2,14 +2,15 @@ import { Alert, Button, Flex, PasswordInput, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useMediaQuery } from '@mantine/hooks';
 import { IconAlertCircle, IconAt, IconKey } from '@tabler/icons';
-import { useAuth } from 'hooks/useAuth';
+import { useAuth } from '../hooks/useAuth';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { reduceError } from 'redux/user/userSlice';
+import { reduceError } from '../redux/user/userSlice';
 import { logIn } from '../redux/user/operations';
+import { useAppDispatch } from '../hooks/typedHooks';
+import { UserLoginRequest } from '../redux/types';
 
 export function LoginForm() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { error } = useAuth();
   const largeScreen = useMediaQuery('(min-width: 900px)');
 
@@ -26,7 +27,7 @@ export function LoginForm() {
     },
   });
 
-  function handleSubmit(values) {
+  function handleSubmit(values: UserLoginRequest): void {
     dispatch(logIn(values));
   }
 
@@ -65,7 +66,7 @@ export function LoginForm() {
           title="Bummer!"
           color="red"
         >
-          Invalid data entered. Please try again.
+          {error}
         </Alert>
       )}
     </>

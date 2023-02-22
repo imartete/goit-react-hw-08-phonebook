@@ -1,15 +1,16 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectContacts } from 'redux/contacts/selectors';
-import { addContact } from 'redux/contacts/operations';
+import { selectContacts } from '../redux/contacts/selectors';
+import { addContact } from '../redux/contacts/operations';
 import { Button, Flex, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { showNotification } from '@mantine/notifications';
 import { useMediaQuery } from '@mantine/hooks';
+import { useAppDispatch, useAppSelector } from '../hooks/typedHooks';
+import { Contact } from '../redux/types';
 
 export function ContactForm() {
-  const contacts = useSelector(selectContacts);
-  const dispatch = useDispatch();
+  const contacts = useAppSelector(selectContacts);
+  const dispatch = useAppDispatch();
   const largeScreen = useMediaQuery('(min-width: 900px)');
 
   const form = useForm({
@@ -44,7 +45,7 @@ export function ContactForm() {
     },
   });
 
-  function handleSubmit(value) {
+  function handleSubmit(value: Contact) {
     dispatch(addContact(value));
     form.reset();
   }

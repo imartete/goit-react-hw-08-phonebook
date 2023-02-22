@@ -1,23 +1,23 @@
-import { Outlet, useNavigate, useResolvedPath } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Suspense, useState } from 'react';
 import { Burger, Button, MediaQuery, Text, Tabs, Flex } from '@mantine/core';
 import { AppShell, Navbar, Header } from '@mantine/core';
-import { useAuth } from 'hooks/useAuth';
-import { useDispatch } from 'react-redux';
-import { logOut } from 'redux/user/operations';
+import { useAuth } from '../hooks/useAuth';
+import { logOut } from '../redux/user/operations';
 import {
   IconAddressBook,
   IconHome2,
   IconLogin,
   IconUserPlus,
 } from '@tabler/icons';
+import { useAppDispatch } from '../hooks/typedHooks';
 
 export function Layout() {
-  const [opened, setOpened] = useState(false);
+  const [opened, setOpened] = useState<boolean>(false);
   const { isLoggedIn, user } = useAuth();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { pathname } = useResolvedPath();
+  const { pathname } = useLocation();
 
   return (
     <AppShell
@@ -100,7 +100,6 @@ export function Layout() {
                   </Text>
                   <Button
                     variant="light"
-                    width="100%"
                     color="indigo"
                     size="lg"
                     onClick={() => dispatch(logOut())}

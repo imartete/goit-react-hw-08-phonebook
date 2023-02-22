@@ -1,23 +1,23 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { ContactList } from 'components/ContactList';
+import { ContactList } from '../components/ContactList';
 import {
   selectContacts,
   selectError,
   selectLoading,
-} from 'redux/contacts/selectors';
-import { fetchContacts } from 'redux/contacts/operations';
-import { Filter } from 'components/SearcFilter';
-import { ContactForm } from 'components/ContactForm';
-import { Loader } from 'components/Loader/Loader';
+} from '../redux/contacts/selectors';
+import { fetchContacts } from '../redux/contacts/operations';
+import { Filter } from '../components/SearcFilter';
+import { ContactForm } from '../components/ContactForm';
+import { Loader } from '../components/Loader/Loader';
 import { Alert, Text } from '@mantine/core';
 import { IconAlertCircle } from '@tabler/icons';
+import { useAppDispatch, useAppSelector } from '../hooks/typedHooks';
 
 export default function Contacts() {
-  const dispatch = useDispatch();
-  const contacts = useSelector(selectContacts);
-  const isLoading = useSelector(selectLoading);
-  const error = useSelector(selectError);
+  const dispatch = useAppDispatch();
+  const contacts = useAppSelector(selectContacts);
+  const isLoading = useAppSelector(selectLoading);
+  const error = useAppSelector(selectError);
 
   useEffect(() => {
     dispatch(fetchContacts());
